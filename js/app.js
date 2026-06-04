@@ -74,7 +74,18 @@ function buildFrames(){
   });
 }
 
-buildFilters(); buildLayouts(); buildFrames();
+function buildEmojis(){
+  const picker = document.getElementById('emoji-picker');
+  EMOJIS.forEach(em=>{
+    const btn=document.createElement('button');
+    btn.className='emoji-btn';
+    btn.textContent=em;
+    btn.addEventListener('click', ()=>addEmojiToOverlay(em));
+    picker.appendChild(btn);
+  });
+}
+
+buildFilters(); buildLayouts(); buildFrames(); buildEmojis();
 
 /* ─── Tabs ─── */
 document.getElementById('source-tabs').addEventListener('click',e=>{
@@ -203,6 +214,56 @@ toggleCaption.addEventListener('click',()=>{
   captionWrap.style.display=state.showCaption?'block':'none';
 });
 
+/* ─── Emojis ─── */
+const emojiOverlay = document.getElementById('emoji-overlay');
+function addEmojiToOverlay(em){
+  if(document.getElementById('strip-canvas').style.display==='none'){
+    alert('Generate strip dulu ya buat nambah stiker!'); return;
+  }
+  const el=document.createElement('div');
+  el.className='draggable-emoji';
+  el.textContent=em;
+  // Center roughly
+  el.style.left = '50%';
+  el.style.top = '50%';
+  emojiOverlay.appendChild(el);
+  
+  // Drag logic
+  let isDragging=false, startX, startY, initialLeft, initialTop;
+  
+  function onPointerDown(e){
+    isDragging=true;
+    // ensure pointers like touch are handled
+    const pointer = e.type.includes('touch') ? e.touches[0] : e;
+    startX = pointer.clientX;
+    startY = pointer.clientY;
+    initialLeft = el.offsetLeft;
+    initialTop = el.offsetTop;
+    el.setPointerCapture?.(e.pointerId);
+    e.preventDefault();
+  }
+  function onPointerMove(e){
+    if(!isDragging) return;
+    const pointer = e.type.includes('touch') ? e.touches[0] : e;
+    const dx = pointer.clientX - startX;
+    const dy = pointer.clientY - startY;
+    el.style.left = (initialLeft + dx) + 'px';
+    el.style.top = (initialTop + dy) + 'px';
+  }
+  function onPointerUp(e){
+    isDragging=false;
+    el.releasePointerCapture?.(e.pointerId);
+  }
+  
+  el.addEventListener('mousedown', onPointerDown);
+  window.addEventListener('mousemove', onPointerMove);
+  window.addEventListener('mouseup', onPointerUp);
+  
+  el.addEventListener('touchstart', onPointerDown, {passive:false});
+  window.addEventListener('touchmove', onPointerMove, {passive:false});
+  window.addEventListener('touchend', onPointerUp);
+}
+
 /* ─── Generate ─── */
 document.getElementById('btn-generate').addEventListener('click',()=>{
   const layout=LAYOUTS.find(l=>l.id===state.layout);
@@ -285,6 +346,7 @@ async function renderStrip(showProgress){
 
   document.getElementById('strip-empty-msg').style.display='none';
   sc.style.display='block';
+  emojiOverlay.style.display='block';
   document.getElementById('btn-download').disabled=false;
   if(showProgress){
     const pf=document.getElementById('progress-fill');
@@ -311,6 +373,38 @@ function isColorDark(hex){
 /* ─── Download / Reset ─── */
 document.getElementById('btn-download').addEventListener('click',()=>{
   const sc=document.getElementById('strip-canvas');
+  const ctx=sc.getContext('2d');
+  
+  // Draw emojis onto canvas before downloading
+  const rect = sc.getBoundingClientRect();
+  const scaleX = sc.width / rect.width;
+  const scaleY = sc.height / rect.height;
+  
+  const emojis = emojiOverlay.querySelectorAll('.draggable-emoji');
+  if(emojis.length > 0) {
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    emojis.forEach(el => {
+      // Map DOM coordinates to Canvas coordinates
+      const cx = el.offsetLeft * scaleX;
+      const cy = el.offsetTop * scaleY;
+      
+      // Calculate font size relative to canvas
+      const computedStyle = window.getComputedStyle(el);
+      const fontSizePx = parseFloat(computedStyle.fontSize);
+      const canvasFontSize = fontSizePx * scaleX;
+      
+      ctx.font = `${canvasFontSize}px sans-serif`;
+      ctx.fillText(el.textContent, cx, cy);
+    });
+    ctx.restore();
+    
+    // Clear overlay since they are drawn now
+    emojiOverlay.innerHTML = '';
+  }
+
   const link=document.createElement('a');
   link.download=`photobox-${Date.now()}.png`;
   link.href=sc.toDataURL('image/png');
@@ -321,6 +415,8 @@ document.getElementById('btn-reset').addEventListener('click',()=>{
   state.shots=[];renderQueue();updateShotsLabel();
   const sc=document.getElementById('strip-canvas');
   sc.style.display='none';
+  emojiOverlay.style.display='none';
+  emojiOverlay.innerHTML='';
   document.getElementById('strip-empty-msg').style.display='block';
   document.getElementById('btn-download').disabled=true;
 });
