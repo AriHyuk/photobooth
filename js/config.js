@@ -49,3 +49,6 @@ const LAYOUTS = [
   { id: "2x3", label: "2×3", cols: 2, rows: 3 },
   { id: "1x1", label: "1×1", cols: 1, rows: 1 },
 ];
+
+const EMOJIS = ["🎀", "⭐", "💖", "🌸", "⚡", "✨", "🔥", "🎉", "🤡", "👽"];
+
