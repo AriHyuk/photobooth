@@ -153,6 +153,9 @@
               "
             />
           </div>
+
+          <div class="section-label">✨ Stiker</div>
+          <div class="emoji-picker" id="emoji-picker"></div>
           <div class="progress-bar" id="progress-bar">
             <div class="progress-fill" id="progress-fill"></div>
           </div>
@@ -165,13 +168,14 @@
 
         <div class="card">
           <div class="section-label">✨ Preview Strip</div>
-          <div class="strip-wrap" id="strip-wrap">
+          <div class="strip-wrap" id="strip-wrap" style="position: relative;">
             <div class="strip-empty-msg" id="strip-empty-msg">
               <span class="big-emoji">🎞️</span>
               Pilih bingkai, ambil foto,<br />terus klik
               <strong>"Generate Strip"</strong>!
             </div>
-            <canvas id="strip-canvas" style="display: none"></canvas>
+            <canvas id="strip-canvas" style="display: none; width: 100%; height: auto;"></canvas>
+            <div id="emoji-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; display: none;"></div>
           </div>
           <div class="controls-row" style="margin-top: 0.75rem">
             <button class="btn btn-yellow" id="btn-download" disabled>
