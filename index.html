@@ -1,121 +1,191 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhotoBox ✦</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header>
-    <h1>✦ PhotoBox</h1>
-    <p>Pilih bingkai, ambil foto, download stripnya!</p>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PhotoBox ✦</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>✦ PhotoBox</h1>
+      <p>Pilih bingkai, ambil foto, download stripnya!</p>
+    </header>
 
-  <div class="main-layout">
-    <!-- LEFT -->
-    <div style="display:flex;flex-direction:column;gap:.9rem">
-      <div class="card">
-        <div class="tabs" id="source-tabs">
-          <button class="tab-btn active" data-tab="webcam">📷 Webcam</button>
-          <button class="tab-btn" data-tab="upload">🖼️ Upload</button>
-        </div>
-        <div id="tab-webcam">
-          <div class="camera-wrap" id="camera-wrap">
-            <div class="camera-placeholder" id="cam-placeholder">
-              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <span style="font-size:.82rem">Klik tombol di bawah untuk nyalain kamera</span>
+    <div class="main-layout">
+      <!-- LEFT -->
+      <div style="display: flex; flex-direction: column; gap: 0.9rem">
+        <div class="card">
+          <div class="tabs" id="source-tabs">
+            <button class="tab-btn active" data-tab="webcam">📷 Webcam</button>
+            <button class="tab-btn" data-tab="upload">🖼️ Upload</button>
+          </div>
+          <div id="tab-webcam">
+            <div class="camera-wrap" id="camera-wrap">
+              <div class="camera-placeholder" id="cam-placeholder">
+                <svg
+                  width="44"
+                  height="44"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path
+                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                  />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
+                <span style="font-size: 0.82rem"
+                  >Klik tombol di bawah untuk nyalain kamera</span
+                >
+              </div>
+              <video id="video" autoplay playsinline></video>
+              <div class="cam-overlay"></div>
+              <div class="countdown-display" id="countdown-display">3</div>
+              <div class="flash-overlay" id="flash-overlay"></div>
             </div>
-            <video id="video" autoplay playsinline></video>
-            <div class="cam-overlay"></div>
-            <div class="countdown-display" id="countdown-display">3</div>
-            <div class="flash-overlay" id="flash-overlay"></div>
-          </div>
-          <canvas id="canvas-capture"></canvas>
-          <div style="margin-top:.9rem">
-            <div class="section-label" style="margin-bottom:.5rem">⏱ Timer</div>
-            <div class="timer-btns">
-              <div class="timer-opt active" data-timer="0">Langsung</div>
-              <div class="timer-opt" data-timer="3">3 dtk</div>
-              <div class="timer-opt" data-timer="5">5 dtk</div>
-              <div class="timer-opt" data-timer="10">10 dtk</div>
+            <canvas id="canvas-capture"></canvas>
+            <div style="margin-top: 0.9rem">
+              <div class="section-label" style="margin-bottom: 0.5rem">
+                ⏱ Timer
+              </div>
+              <div class="timer-btns">
+                <div class="timer-opt active" data-timer="0">Langsung</div>
+                <div class="timer-opt" data-timer="3">3 dtk</div>
+                <div class="timer-opt" data-timer="5">5 dtk</div>
+                <div class="timer-opt" data-timer="10">10 dtk</div>
+              </div>
+            </div>
+            <div class="controls-row">
+              <button class="btn btn-secondary" id="btn-start-cam">
+                📷 Nyalain Kamera
+              </button>
+              <button class="btn btn-primary" id="btn-capture" disabled>
+                ✨ Ambil Foto
+              </button>
             </div>
           </div>
-          <div class="controls-row">
-            <button class="btn btn-secondary" id="btn-start-cam">📷 Nyalain Kamera</button>
-            <button class="btn btn-primary" id="btn-capture" disabled>✨ Ambil Foto</button>
+
+          <div id="tab-upload" style="display: none">
+            <div class="upload-zone" id="upload-zone">
+              <div style="font-size: 2rem">🖼️</div>
+              <strong
+                style="
+                  font-family: &quot;Fredoka&quot;, sans-serif;
+                  color: var(--pink);
+                "
+                >Drag & drop foto di sini</strong
+              >
+              <p>
+                atau klik untuk pilih dari file<br /><small
+                  >JPG, PNG — bisa multi-file</small
+                >
+              </p>
+              <input type="file" id="file-input" accept="image/*" multiple />
+            </div>
+          </div>
+
+          <div style="margin-top: 0.9rem">
+            <div class="section-label">
+              🎞 Foto Terpilih
+              <span
+                id="shots-count"
+                style="
+                  font-size: 0.78rem;
+                  color: var(--muted);
+                  font-family: &quot;DM Sans&quot;, sans-serif;
+                "
+                >(0/?)</span
+              >
+            </div>
+            <div class="shot-queue" id="shot-queue"></div>
+            <p class="shots-label" id="shots-hint">
+              Ambil atau upload foto untuk mulai!
+            </p>
           </div>
         </div>
 
-        <div id="tab-upload" style="display:none">
-          <div class="upload-zone" id="upload-zone">
-            <div style="font-size:2rem">🖼️</div>
-            <strong style="font-family:'Fredoka',sans-serif;color:var(--pink)">Drag & drop foto di sini</strong>
-            <p>atau klik untuk pilih dari file<br><small>JPG, PNG — bisa multi-file</small></p>
-            <input type="file" id="file-input" accept="image/*" multiple>
-          </div>
-        </div>
-
-        <div style="margin-top:.9rem">
-          <div class="section-label">🎞 Foto Terpilih <span id="shots-count" style="font-size:.78rem;color:var(--muted);font-family:'DM Sans',sans-serif">(0/?)</span></div>
-          <div class="shot-queue" id="shot-queue"></div>
-          <p class="shots-label" id="shots-hint">Ambil atau upload foto untuk mulai!</p>
+        <div class="card">
+          <div class="section-label">🎨 Filter Foto</div>
+          <div class="filter-scroll" id="filter-row"></div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="section-label">🎨 Filter Foto</div>
-        <div class="filter-scroll" id="filter-row"></div>
+      <!-- RIGHT -->
+      <div class="right-panel">
+        <div class="card">
+          <div class="section-label">📐 Layout Strip</div>
+          <div class="layout-grid" id="layout-grid"></div>
+
+          <div class="section-label">🖼️ Tema Bingkai</div>
+          <div class="frame-grid" id="frame-grid"></div>
+
+          <div class="toggle-row">
+            <span>📅 Tampilkan tanggal</span>
+            <button class="toggle on" id="toggle-date"></button>
+          </div>
+          <div class="toggle-row">
+            <span>✍️ Caption</span>
+            <button class="toggle" id="toggle-caption"></button>
+          </div>
+          <div
+            id="caption-input-wrap"
+            style="display: none; margin-bottom: 0.6rem"
+          >
+            <input
+              type="text"
+              id="caption-text"
+              placeholder="Tulis caption..."
+              style="
+                width: 100%;
+                padding: 0.45rem 0.7rem;
+                border: 1.5px solid var(--border);
+                border-radius: 9px;
+                font-family: &quot;DM Sans&quot;, sans-serif;
+                font-size: 0.85rem;
+                outline: none;
+                color: var(--text);
+              "
+            />
+          </div>
+          <div class="progress-bar" id="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="controls-row" style="margin-top: 0.75rem">
+            <button class="btn btn-mint" id="btn-generate">
+              🪄 Generate Strip
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-label">✨ Preview Strip</div>
+          <div class="strip-wrap" id="strip-wrap">
+            <div class="strip-empty-msg" id="strip-empty-msg">
+              <span class="big-emoji">🎞️</span>
+              Pilih bingkai, ambil foto,<br />terus klik
+              <strong>"Generate Strip"</strong>!
+            </div>
+            <canvas id="strip-canvas" style="display: none"></canvas>
+          </div>
+          <div class="controls-row" style="margin-top: 0.75rem">
+            <button class="btn btn-yellow" id="btn-download" disabled>
+              ⬇️ Download
+            </button>
+            <button class="btn btn-secondary" id="btn-reset">🔄 Reset</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="right-panel">
-      <div class="card">
-        <div class="section-label">📐 Layout Strip</div>
-        <div class="layout-grid" id="layout-grid"></div>
-
-        <div class="section-label">🖼️ Tema Bingkai</div>
-        <div class="frame-grid" id="frame-grid"></div>
-
-        <div class="toggle-row">
-          <span>📅 Tampilkan tanggal</span>
-          <button class="toggle on" id="toggle-date"></button>
-        </div>
-        <div class="toggle-row">
-          <span>✍️ Caption</span>
-          <button class="toggle" id="toggle-caption"></button>
-        </div>
-        <div id="caption-input-wrap" style="display:none;margin-bottom:.6rem">
-          <input type="text" id="caption-text" placeholder="Tulis caption..." style="width:100%;padding:.45rem .7rem;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;color:var(--text)">
-        </div>
-        <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-        <div class="controls-row" style="margin-top:.75rem">
-          <button class="btn btn-mint" id="btn-generate">🪄 Generate Strip</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-label">✨ Preview Strip</div>
-        <div class="strip-wrap" id="strip-wrap">
-          <div class="strip-empty-msg" id="strip-empty-msg">
-            <span class="big-emoji">🎞️</span>
-            Pilih bingkai, ambil foto,<br>terus klik <strong>"Generate Strip"</strong>!
-          </div>
-          <canvas id="strip-canvas" style="display:none"></canvas>
-        </div>
-        <div class="controls-row" style="margin-top:.75rem">
-          <button class="btn btn-yellow" id="btn-download" disabled>⬇️ Download</button>
-          <button class="btn btn-secondary" id="btn-reset">🔄 Reset</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts loaded sequentially -->
-  <script src="js/config.js"></script>
-  <script src="js/frames.js"></script>
-  <script src="js/app.js"></script>
-</body>
+    <!-- Scripts loaded sequentially -->
+    <script src="js/config.js"></script>
+    <script src="js/frames.js"></script>
+    <script src="js/app.js"></script>
+  </body>
 </html>
