@@ -91,5 +91,5 @@ header p{color:var(--muted);font-size:.9rem;margin-top:.3rem}
 .emoji-btn{background:transparent;border:none;font-size:1.4rem;cursor:pointer;transition:transform .2s;user-select:none}
 .emoji-btn:hover{transform:scale(1.2)}
 .emoji-btn:active{transform:scale(.9)}
-.draggable-emoji{position:absolute;font-size:2rem;cursor:grab;user-select:none;touch-action:none;transform:translate(-50%, -50%)}
+.draggable-emoji{position:absolute;font-size:2rem;cursor:grab;user-select:none;touch-action:none;transform:translate(-50%, -50%);pointer-events:auto}
 .draggable-emoji:active{cursor:grabbing}
