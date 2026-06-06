@@ -311,11 +311,21 @@ const FRAMES = [
 
       try {
         const logo = await loadImg('assets/mu-logo.png');
-        const logoSize = 80;
-        ctx.drawImage(logo, w/2 - logoSize/2, pad*0.8, logoSize, logoSize);
-        ctx.fillText("KING EMYU", w/2, pad*0.8 + logoSize + pad*0.6);
+        const logoSize = 50;
+        ctx.drawImage(logo, w/2 - logoSize/2, pad*0.2, logoSize, logoSize);
+        
+        ctx.fillStyle='#FBE122';
+        ctx.strokeStyle='#000';
+        ctx.lineWidth=3;
+        ctx.font=`bold ${pad*0.8}px 'Fredoka',sans-serif`;
+        ctx.strokeText("KING EMYU", w/2, pad*0.2 + logoSize + pad*0.8);
+        ctx.fillText("KING EMYU", w/2, pad*0.2 + logoSize + pad*0.8);
       } catch(e) {
-        ctx.fillText("KING EMYU", w/2, pad*0.5);
+        ctx.fillStyle='#FBE122';
+        ctx.strokeStyle='#000';
+        ctx.lineWidth=3;
+        ctx.strokeText("KING EMYU", w/2, pad*1.2);
+        ctx.fillText("KING EMYU", w/2, pad*1.2);
       }
 
       // Crowns in corners

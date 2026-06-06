@@ -358,7 +358,7 @@ async function renderStrip(showProgress){
 
 function getFrameMainColor(id){
   const dark=['stardust', 'king_emyu'];
-  return dark.includes(id)?'#000':'#fff';
+  return dark.includes(id)?'#000000':'#ffffff';
 }
 
 function loadImg(src){
