@@ -327,7 +327,8 @@ async function renderStrip(showProgress){
   ctx.filter='none';
 
   // 3) draw frame decorations ON TOP
-  frame.draw(ctx,stripW,stripH,PADDING);
+  const drawRes = frame.draw(ctx,stripW,stripH,PADDING);
+  if(drawRes instanceof Promise) await drawRes;
 
   // 4) footer
   if(FOOTER>0){
@@ -356,7 +357,7 @@ async function renderStrip(showProgress){
 }
 
 function getFrameMainColor(id){
-  const dark=['stardust'];
+  const dark=['stardust', 'king_emyu'];
   return dark.includes(id)?'#000':'#fff';
 }
 

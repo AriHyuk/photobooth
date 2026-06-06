@@ -284,6 +284,45 @@ const FRAMES = [
       drawBotanicalBorder(ctx,w,h,pad);
     }
   },
+  { id:'king_emyu', label:'King Emyu 👑',
+    bg: (ctx,w,h) => {
+      // MU Red background
+      ctx.fillStyle='#DA291C'; ctx.fillRect(0,0,w,h);
+      // Subtle diagonal stripes
+      ctx.lineWidth=4; ctx.strokeStyle='rgba(0,0,0,0.1)';
+      for(let i=-w; i<w+h; i+=15){
+        ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+h,h); ctx.stroke();
+      }
+    },
+    draw: async (ctx,w,h,pad) => {
+      const bw=pad*0.5;
+      // Gold border
+      ctx.strokeStyle='#FBE122'; ctx.lineWidth=bw;
+      ctx.strokeRect(bw,bw,w-bw*2,h-bw*2);
+      
+      // Black inner border
+      ctx.strokeStyle='#000'; ctx.lineWidth=2;
+      ctx.strokeRect(bw*1.5,bw*1.5,w-bw*3,h-bw*3);
+
+      // Gold text GGMU
+      ctx.fillStyle='#FBE122';
+      ctx.font=`bold ${pad*0.6}px 'Fredoka',sans-serif`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+
+      try {
+        const logo = await loadImg('assets/mu-logo.png');
+        const logoSize = 80;
+        ctx.drawImage(logo, w/2 - logoSize/2, pad*0.8, logoSize, logoSize);
+        ctx.fillText("KING EMYU", w/2, pad*0.8 + logoSize + pad*0.6);
+      } catch(e) {
+        ctx.fillText("KING EMYU", w/2, pad*0.5);
+      }
+
+      // Crowns in corners
+      const cps=[[pad*0.8,pad*0.8],[w-pad*0.8,pad*0.8],[pad*0.8,h-pad*0.8],[w-pad*0.8,h-pad*0.8]];
+      cps.forEach(([cx,cy])=>drawCrown(ctx,cx,cy,pad*0.45,'#FBE122'));
+    }
+  },
 ];
 
 /* ═══════════════════════
@@ -522,4 +561,23 @@ function rr(ctx,x,y,w,h,r){
   ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
   ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
   ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+}
+
+function drawCrown(ctx,x,y,s,color){
+  ctx.save(); ctx.translate(x,y);
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.moveTo(-s*0.8, s*0.4);
+  ctx.lineTo(s*0.8, s*0.4);
+  ctx.lineTo(s*0.9, -s*0.4);
+  ctx.lineTo(s*0.3, -s*0.1);
+  ctx.lineTo(0, -s*0.6);
+  ctx.lineTo(-s*0.3, -s*0.1);
+  ctx.lineTo(-s*0.9, -s*0.4);
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.fillStyle='#DA291C';
+  ctx.beginPath(); ctx.arc(0, s*0.2, s*0.1, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
 }
